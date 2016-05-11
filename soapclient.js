@@ -246,8 +246,21 @@ SOAPClient._node2object = function(node, wsdlTypes)
 			obj = new Object();
 		for(var i = 0; i < node.childNodes.length; i++)
 		{
-			var p = SOAPClient._node2object(node.childNodes[i], wsdlTypes);
-			obj[node.childNodes[i].nodeName] = p;
+		    var p = SOAPClient._node2object(node.childNodes[i], wsdlTypes);
+                    // obj[node.childNodes[i].nodeName] = p;
+
+                    if (obj[node.childNodes[i].nodeName]) {
+                        if (obj[node.childNodes[i].nodeName].push) {
+                            obj[node.childNodes[i].nodeName].push(p);
+                        }
+                        else {
+                            var val = obj[node.childNodes[i].nodeName];
+                            obj[node.childNodes[i].nodeName] = new Array(val, p);
+                        }
+                    }
+                    else {
+                        obj[node.childNodes[i].nodeName] = p;
+                    }
 		}
 		return obj;
 	}
